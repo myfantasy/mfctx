@@ -59,4 +59,12 @@ func init() {
 	AddMarchallerByInterface(reflect.TypeOf((*Jsonifable)(nil)).Elem(), func(r reflect.Value, indentNow, typeNow, indent, nextRow string) (res []byte, ok bool) {
 		return r.Interface().(Jsonifable).Jsonify(), true
 	})
+
+	AddMarchallerByExamplePartType(json.RawMessage("rmsg"), func(r reflect.Value, indentNow, typeNow, indent, nextRow string) (res []byte, ok bool) {
+		t := r.Interface().(json.RawMessage)
+		if t == nil {
+			t = json.RawMessage("null")
+		}
+		return t, true
+	})
 }
