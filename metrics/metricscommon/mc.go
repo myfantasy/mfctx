@@ -1,6 +1,7 @@
 package metricscommon
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/myfantasy/mfctx"
@@ -12,6 +13,8 @@ type MetricsCommon struct {
 	FinishTotal     *prometheus.CounterVec
 	FinishTimeHist  *prometheus.HistogramVec
 	FinishTimeTotal *prometheus.CounterVec
+	Alarm           map[string]map[string]bool
+	AlarmSegment    map[string]bool
 }
 
 var _ mfctx.MetricsProvider = &MetricsCommon{}
@@ -39,7 +42,7 @@ func NewMetricsCommon() *MetricsCommon {
 				Help:        "How many HTTP runnings finish, partitioned",
 				ConstLabels: constLabels,
 			}, []string{
-				"segment", "method", "status_code",
+				"segment", "method", "status_code", "alarm",
 			},
 		),
 		FinishTimeHist: prometheus.NewHistogramVec(
@@ -49,7 +52,7 @@ func NewMetricsCommon() *MetricsCommon {
 				ConstLabels: constLabels,
 				Buckets:     []float64{5, 10, 20, 50, 100, 200, 500, 1000, 2000},
 			}, []string{
-				"segment", "method", "status_code",
+				"segment", "method", "status_code", "alarm",
 			},
 		),
 		FinishTimeTotal: prometheus.NewCounterVec(
@@ -58,7 +61,7 @@ func NewMetricsCommon() *MetricsCommon {
 				Help:        "Total amount of time spent on the runnings finish",
 				ConstLabels: constLabels,
 			}, []string{
-				"segment", "method", "status_code",
+				"segment", "method", "status_code", "alarm",
 			},
 		),
 	}
@@ -93,7 +96,15 @@ func (mc *MetricsCommon) WriteMetricResponse(c *mfctx.Crumps, mRequest time.Time
 		return
 	}
 
-	responseLabels := []string{segment, method, statusCode}
+	var alarm bool
+	if statusCode == mfctx.MsgError {
+		asg := mc.AlarmSegment[segment]
+		msg := mc.Alarm[segment][method]
+
+		alarm = asg || msg
+	}
+
+	responseLabels := []string{segment, method, statusCode, fmt.Sprint(alarm)}
 	diff := time.Since(mRequest).Milliseconds()
 
 	mc.FinishTotal.WithLabelValues(responseLabels...).Inc()

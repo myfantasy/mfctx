@@ -233,3 +233,10 @@ func (c *Crumps) Log(level LogLevel, message string) {
 	WriteLog(c.lp, c, level, message,
 		c.segment, c.method, c.operationID, c.traceID, c.steps, valuesMapCopy(c.values))
 }
+
+func (c *Crumps) GetOperationID() string {
+	if c == nil {
+		return ""
+	}
+	return c.operationID
+}
