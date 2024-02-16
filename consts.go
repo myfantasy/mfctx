@@ -28,9 +28,18 @@ const (
 var appID = ints.DefaultUuidGenerator.Next().String()
 
 var (
+	dataCenter = "dc"
 	appName    = "appName"
 	appVersion = "appVersion"
 )
+
+func SetDataCenter(name string) {
+	dataCenter = name
+}
+
+func GetDataCenter() (name string) {
+	return dataCenter
+}
 
 func SetAppName(name string) {
 	appName = name

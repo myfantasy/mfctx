@@ -39,7 +39,7 @@ func NewMetricsCommon() *MetricsCommon {
 			// nolint:promlinter
 			prometheus.CounterOpts{
 				Name:        "method_run_finish",
-				Help:        "How many HTTP runnings finish, partitioned",
+				Help:        "How many runnings finish, partitioned",
 				ConstLabels: constLabels,
 			}, []string{
 				"segment", "method", "status_code", "alarm",

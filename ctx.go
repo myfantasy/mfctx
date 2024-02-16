@@ -240,3 +240,67 @@ func (c *Crumps) GetOperationID() string {
 	}
 	return c.operationID
 }
+
+func (c *Crumps) WithCancelCause() (*Crumps, context.CancelCauseFunc) {
+	c = c.Copy()
+	var cancel context.CancelCauseFunc
+	c.ctx, cancel = context.WithCancelCause(c.ctx)
+
+	return c, cancel
+}
+
+func (c *Crumps) WithCancel() (*Crumps, context.CancelFunc) {
+	c = c.Copy()
+	var cancel context.CancelFunc
+	c.ctx, cancel = context.WithCancel(c.ctx)
+
+	return c, cancel
+}
+
+func (c *Crumps) WithTimeoutCause(timeout time.Duration, cause error) (*Crumps, context.CancelFunc) {
+	c = c.Copy()
+	var cancel context.CancelFunc
+	c.ctx, cancel = context.WithTimeoutCause(c.ctx, timeout, cause)
+
+	return c, cancel
+}
+
+func (c *Crumps) WithTimeout(timeout time.Duration) (*Crumps, context.CancelFunc) {
+	c = c.Copy()
+	var cancel context.CancelFunc
+	c.ctx, cancel = context.WithTimeout(c.ctx, timeout)
+
+	return c, cancel
+}
+
+func (c *Crumps) WithDeadlineCause(d time.Time, cause error) (*Crumps, context.CancelFunc) {
+	c = c.Copy()
+	var cancel context.CancelFunc
+	c.ctx, cancel = context.WithDeadlineCause(c.ctx, d, cause)
+
+	return c, cancel
+}
+
+func (c *Crumps) WithDeadline(d time.Time) (*Crumps, context.CancelFunc) {
+	c = c.Copy()
+	var cancel context.CancelFunc
+	c.ctx, cancel = context.WithDeadline(c.ctx, d)
+
+	return c, cancel
+}
+
+func (c *Crumps) WithValue(key any, val any) (*Crumps, context.CancelFunc) {
+	c = c.Copy()
+	var cancel context.CancelFunc
+	c.ctx = context.WithValue(c.ctx, key, val)
+
+	return c, cancel
+}
+
+func (c *Crumps) WithoutCancel(key any, val any) (*Crumps, context.CancelFunc) {
+	c = c.Copy()
+	var cancel context.CancelFunc
+	c.ctx = context.WithoutCancel(c.ctx)
+
+	return c, cancel
+}
