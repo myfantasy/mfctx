@@ -61,6 +61,14 @@ func init() {
 	})
 
 	AddMarchallerByExamplePartType(json.RawMessage("rmsg"), func(r reflect.Value, indentNow, typeNow, indent, nextRow string) (res []byte, ok bool) {
+		if r.IsNil() {
+			t := json.RawMessage("null")
+			return t, true
+		}
+		if !r.CanInterface() {
+			t := r.Bytes()
+			return t, true
+		}
 		t := r.Interface().(json.RawMessage)
 		if t == nil {
 			t = json.RawMessage("null")

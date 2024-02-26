@@ -20,6 +20,15 @@ func JsonifySLn(val any) string {
 	return string(Jsonify(val, " ", "\n"))
 }
 
+// JsonifySM - (single line) makes json from val. Includes privat fields.
+// use `jignore:""` tag for ignore field
+// use `masker:""` tag for masking field with * (len will be same)
+// use `masker:"fl"` tag for masking field exepting first and last value
+// there is no cyclomatic protection
+func JsonifySM(val any) string {
+	return string(Jsonify(val, "", ""))
+}
+
 // JsonifyS - makes json from val. Includes privat fields.
 // use `jignore:""` tag for ignore field
 // use `masker:""` tag for masking field with * (len will be same)
