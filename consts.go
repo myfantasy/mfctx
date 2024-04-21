@@ -25,7 +25,8 @@ const (
 	MsgError    = "error"
 )
 
-var appID = ints.DefaultUuidGenerator.Next().String()
+var appIDUUid = ints.DefaultUuidGenerator.Next()
+var appID = appIDUUid.String()
 
 var (
 	dataCenter = "dc"
@@ -59,4 +60,8 @@ func GetAppVersion() (version string) {
 
 func GetAppID() string {
 	return appID
+}
+
+func GetAppIDUUID() ints.Uuid {
+	return appIDUUid
 }

@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"reflect"
 	"time"
+
+	"github.com/myfantasy/ints"
 )
 
 type JsonifyMarchaller func(r reflect.Value, indentNow string, typeNow string, indent string, nextRow string) (res []byte, ok bool)
@@ -42,6 +44,11 @@ func init() {
 	AddMarchallerByExample(time.Time{}, func(r reflect.Value, indentNow, typeNow, indent, nextRow string) (res []byte, ok bool) {
 		t := r.Interface().(time.Time)
 		return []byte("\"" + t.Format(time.RFC3339Nano) + "\""), true
+	})
+
+	AddMarchallerByExample(ints.Uuid{}, func(r reflect.Value, indentNow, typeNow, indent, nextRow string) (res []byte, ok bool) {
+		t := r.Interface().(ints.Uuid)
+		return []byte("\"" + t.String() + "\""), true
 	})
 
 	AddMarchallerByExamplePartType(errors.New("abc"), func(r reflect.Value, indentNow, typeNow, indent, nextRow string) (res []byte, ok bool) {

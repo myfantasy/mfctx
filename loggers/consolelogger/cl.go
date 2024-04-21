@@ -19,6 +19,11 @@ const (
 	OPName  = "op_id"
 	TRName  = "tr_id"
 
+	AppID   = "app_id"
+	AppName = "app_n"
+	Version = "version"
+	DCName  = "dc"
+
 	STName = "steps"
 )
 
@@ -84,6 +89,11 @@ func (l *SimpleConsoleLogger) WriteLog(
 	}
 	vls = append(vls, valType{name: OPName, value: jsonify.JsonifyM(operationID)})
 	vls = append(vls, valType{name: TRName, value: jsonify.JsonifyM(traceID)})
+
+	vls = append(vls, valType{name: AppName, value: jsonify.JsonifyM(mfctx.GetAppName())})
+	vls = append(vls, valType{name: AppID, value: jsonify.JsonifyM(mfctx.GetAppID())})
+	vls = append(vls, valType{name: Version, value: jsonify.JsonifyM(mfctx.GetAppVersion())})
+	vls = append(vls, valType{name: DCName, value: jsonify.JsonifyM(mfctx.GetDataCenter())})
 
 	if len(steps) > 0 {
 		vls = append(vls, valType{name: STName, value: jsonify.JsonifyM(steps)})
