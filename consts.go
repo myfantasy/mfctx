@@ -5,7 +5,7 @@ import "github.com/myfantasy/ints"
 type LogLevel string
 
 const (
-	CtxValName = "_Crumps"
+	CtxValName string = "_Crumps"
 )
 
 const (

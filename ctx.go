@@ -68,9 +68,7 @@ func valuesCopy(vs Values) Values {
 func stepsCopy(s []StepInfo) []StepInfo {
 	res := make([]StepInfo, 0, len(s)+1)
 
-	for _, v := range s {
-		res = append(res, v)
-	}
+	res = append(res, s...)
 
 	return res
 }
